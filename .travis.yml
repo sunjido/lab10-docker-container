@@ -1,0 +1,19 @@
+language: node_js
+sudo: required
+before_install:
+- docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+install: true
+before_script:
+- export DOCKER_HOST="$HOST_NAME"
+script:
+- docker build -t $DOCKER_USERNAME/htmltest .
+- docker push $DOCKER_USERNAME/htmltest
+after_success:
+- docker stop htmltest
+- docker rm htmltest
+- docker run -p 8088:80 -d  --name htmltest $DOCKER_USERNAME/htmltest:latest
+service: docker
+env:
+  global:
+  - secure: fq/C6Eb87UkIOYw1D7CBYwcFFqpPHIzXvK3HlExVgqbZJ9izSN5OKgzsnTFnB7+H7eumI/h3ZRSFQDuGCNQyU72uTdgBLwNbg6aTBLMFnyEpScGgbYEYn9Bb+4zr2wXeLpNeZ0TVn7xJcOyr0ejMkMkErXTfYRvy1BV6OXDu7hC7RUZn+TG2cb2aVHyD+BNQyOPpxxQACI1+9vDnFm3iW09ic1ICvBQabbArt+n4H/zJi3Sj3GVoPyfB+/5u0IwxWiHz2HRXXXQHW5uNMEtqFbBA/LIe72bgKU1pfvMwih1K8j9sCSHGDQkzDKeh+4PGVUO4hSK2YvlK1XdGyT6orTnhs+IelGI6DE90LBETXte8qC5xg7rfBa06JEh19rBwDC330Fkm+uWcxMRGE7B8GjDmH1yhNUfQ9Awv1INfrq8CRZB5b4mMQOO0ojDyrXePLway1UtMELPqyHo49y1PaUgyJGpLQni5o0B7mdDu8n1WLDCi5vw4cq/d83zG7GID41KSOHet4cnNFKL5Kbfwh6IgjOPMI1QztyrkjxlAroiknObaE8H8pJmouObdLzljegRGG1s71L4LYlrOMmL9GaKHHLBuSlc0Eo44eG14GwYkYAdDGxd3e+7vs0qLR+zoKGUXbvU58CKmeyerZx8NyB24paPOnReXpYLfCW+2rkY=
+  - secure: g9MmO9m/wD2eE1ETTnyDCrkN1/IAFnTS3xV9ZfX7+B6QEJUnwtiOecYUpHrLJcL3TGJC0mHVXAWv2ZhpOlu8cagijXXFeP7aFcJ8RPu8Q0pVOiymC7OBlCcrY18BrlCxT6knb0ke8+ZTZMheOR21lSAN8NA1s7Ucsg2N9vZdl+4xTnjF0Z2Ff45ciwVphWzmYO67gCN+mSVUkrLMnImK5pjjGyw4pYEHjuB8nLh6UKk9fREdaW0AjErT4oUmjHcRg58QjdFJ/3xsn9sCeZsX/ggRhxhqgXVY7LjwMISAJigWIm6HHPCuZYYKzk7EmwS0E4Gn/qewJ+BJjU7Kg5y+1SIuOtY75NFrqmvxggLY8wemEjc1ggnAtNLydzmGrVSrgPxYNzVtfC3xpaGctYTb/qH/ZbJIn+mRNOdFv/EZwYv06oPfB2SFWOMs+RQyvmep3JmosFwqhZc5iHgkJkwHr6CV1h+/uQEZojmX1dVqVFg4LUwZBoKKgFDiFEvz+MmdPfRMj4Gpgj1BlNoErUMGjrGTHNqvnF14vF+284Y1I2BvPkoywadbt4Zvqorj4u5bJZyVEiy9+IoBG6mzV/yaxbbdCEgDHBrxCuhKR/s92GD5IB8aQJ1j7+OLWH632Zxq3PJLadTs0neA0+BiX0F3nPT19m1oIyB5Hk/qvM7HGXA=
